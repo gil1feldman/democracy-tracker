@@ -51,7 +51,7 @@
 
     .checkboxes {
       margin-top: 10px;
-      padding: 10px 15px;
+      padding: 10px 15px 10px 25px; /* ריווח פנימי משמאל */
       border: 1px solid #eee;
       border-radius: 8px;
       background: #fafafa;
@@ -62,19 +62,28 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row-reverse; /* מבטיח שה-checkbox יהיה מימין לטקסט */
+      flex-direction: row-reverse;
       align-items: center;
-      justify-content: flex-start; /* מתחיל מימין ב-RTL */
-      gap: 12px; /* מרווח גדול יותר בין ה-checkbox לטקסט */
+      justify-content: flex-start;
+      gap: 12px;
       text-align: right;
       font-weight: normal;
-      margin: 12px 0; /* מרווח גדול יותר בין השורות */
-      width: 100%; /* מבטיח שה-label יתפוס את כל הרוחב */
-      line-height: 1.5; /* שיפור המראה של הטקסט */
+      margin: 12px 0;
+      width: 100%;
+      line-height: 1.5;
+      padding: 5px 0; /* ריווח פנימי אנכי */
+      border-bottom: 1px solid #eee; /* קו תחתון להפרדה בין שורות */
+    }
+
+    .checkboxes label:last-child {
+      border-bottom: none; /* הסרת הקו בשורה האחרונה */
     }
 
     .checkboxes input[type="checkbox"] {
       margin: 0;
+      width: 18px; /* הגדלת ה-checkbox */
+      height: 18px;
+      accent-color: #003366; /* צבע מותאם ל-checkbox כשהוא מסומן */
     }
 
     button {
