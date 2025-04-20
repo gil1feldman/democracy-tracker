@@ -62,7 +62,7 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row; /* שימוש ב-row רגיל */
+      flex-direction: row-reverse; /* מבטיח שה-checkbox יהיה מימין לטקסט */
       align-items: center;
       justify-content: flex-start; /* מתחיל מימין ב-RTL */
       gap: 12px;
@@ -73,7 +73,6 @@
       line-height: 1.5;
       padding: 5px 0;
       border-bottom: 1px solid #eee;
-      padding-right: 10px; /* דחיפת ה-checkbox ימינה */
     }
 
     .checkboxes label:last-child {
@@ -85,7 +84,6 @@
       width: 18px;
       height: 18px;
       accent-color: #003366;
-      order: -1; /* מבטיח שה-checkbox יופיע מימין ב-RTL */
     }
 
     button {
