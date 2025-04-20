@@ -49,15 +49,6 @@
       min-height: 100px;
     }
 
-    .checkboxes label {
-      font-weight: normal;
-      margin: 5px 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      text-align: right;
-    }
-
     .checkboxes {
       margin-top: 10px;
       padding: 10px;
@@ -66,6 +57,16 @@
       background: #fafafa;
       max-height: 300px;
       overflow-y: auto;
+    }
+
+    .checkboxes label {
+      font-weight: normal;
+      margin: 5px 0;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      gap: 10px;
+      text-align: right;
     }
 
     button {
@@ -152,20 +153,14 @@
       }
       checkboxSection.style.display = 'block';
       const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
-      points.forEach((point, index) => {
+      points.forEach((point) => {
         const label = document.createElement('label');
-        label.style.display = 'flex';
-        label.style.flexDirection = 'row';
-        label.style.alignItems = 'center';
-        label.style.justifyContent = 'flex-start';
-        label.style.textAlign = 'right';
-        label.style.gap = '10px';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.name = 'points';
         checkbox.value = point;
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(' ' + point));
+        label.appendChild(document.createTextNode(point));
         checkboxSection.appendChild(label);
       });
     });
