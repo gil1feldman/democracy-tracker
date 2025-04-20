@@ -62,7 +62,7 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row-reverse;
+      flex-direction: row; /* ✅ checkbox מימין לטקסט */
       align-items: center;
       justify-content: flex-start;
       gap: 12px;
@@ -84,7 +84,6 @@
       width: 18px;
       height: 18px;
       accent-color: #003366;
-      margin-left: auto; /* ✅ דוחף את ה-checkbox לימין */
     }
 
     .checkboxes label span {
@@ -187,8 +186,8 @@
         const textSpan = document.createElement('span');
         textSpan.textContent = point;
 
-        label.appendChild(checkbox);
-        label.appendChild(textSpan);
+        label.appendChild(textSpan);   // קודם הטקסט
+        label.appendChild(checkbox);  // אחר כך ה-checkbox
         checkboxSection.appendChild(label);
       });
     });
