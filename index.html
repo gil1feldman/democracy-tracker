@@ -62,7 +62,7 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row; /* checkbox מימין, טקסט משמאל */
+      flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       gap: 12px;
@@ -186,14 +186,15 @@
         const textSpan = document.createElement('span');
         textSpan.textContent = point;
 
-        label.appendChild(checkbox);  // ✅ checkbox קודם
-        label.appendChild(textSpan);  // ✅ ואז הטקסט
+        label.appendChild(checkbox);
+        label.appendChild(textSpan);
         checkboxSection.appendChild(label);
       });
     });
 
     document.getElementById('reportForm').addEventListener('submit', function (e) {
       e.preventDefault();
+
       const data = {
         source: sourceSelect.value,
         points: Array.from(document.querySelectorAll('input[name="points"]:checked')).map(cb => cb.value),
@@ -201,11 +202,25 @@
         date: document.getElementById('date').value,
         comments: document.getElementById('comments').value
       };
-      console.log("נשלח:", data);
-      alert("הטופס נשלח (כרגע רק לקונסול – בהמשך ישולב עם Google Sheet)");
-      this.reset();
-      checkboxSection.innerHTML = '';
-      checkboxSection.style.display = 'none';
+
+      fetch("https://script.google.com/macros/s/AKfycbyJygr0JdqJdGBvRmXlWkmm-NTYpurDipZStVjWauBRJdHQqEdJD0Z1ZOl5KQfh8NCT/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.json())
+      .then(response => {
+        alert("הטופס נשלח בהצלחה!");
+        document.getElementById('reportForm').reset();
+        checkboxSection.innerHTML = '';
+        checkboxSection.style.display = 'none';
+      })
+      .catch(err => {
+        console.error(err);
+        alert("שגיאה בשליחה. נסה שוב.");
+      });
     });
   </script>
 </body>
