@@ -155,6 +155,8 @@
       points.forEach((point, index) => {
         const label = document.createElement('label');
         label.style.justifyContent = 'flex-end';
+        label.style.flexDirection = 'row-reverse';
+        label.style.textAlign = 'right';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.name = 'points';
