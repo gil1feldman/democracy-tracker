@@ -146,6 +146,10 @@
     sourceSelect.addEventListener('change', function () {
       const value = this.value;
       checkboxSection.innerHTML = '';
+      if (!value) {
+        checkboxSection.style.display = 'none';
+        return;
+      }
       checkboxSection.style.display = 'block';
       const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
       points.forEach((point, index) => {
@@ -158,6 +162,7 @@
         label.appendChild(document.createTextNode(point));
         checkboxSection.appendChild(label);
       });
+    });
     });
 
     document.getElementById('reportForm').addEventListener('submit', function (e) {
