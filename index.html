@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>טופס תיעוד ידיעות</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background-color: #f0f4f8;
+      padding: 30px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #003366;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    .checkboxes label {
+      font-weight: normal;
+      margin: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .checkboxes {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    button {
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #002244;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>תיעוד ידיעות לפי סממני משטר</h2>
+    <form id="reportForm">
+      <label for="sourceType">בחרו את מקור ההשראה:</label>
+      <select id="sourceType" required>
+        <option value="">בחרו...</option>
+        <option value="rodanut">רודנות בחסות החוק</option>
+        <option value="fascism">סממני הפשיזם</option>
+      </select>
+
+      <div id="checkboxSection" class="checkboxes" style="display:none;"></div>
+
+      <label for="link">קישור לידיעה:</label>
+      <input type="url" id="link" required>
+
+      <label for="date">תאריך הידיעה:</label>
+      <input type="date" id="date">
+
+      <label for="comments">הערות / פרשנות:</label>
+      <textarea id="comments" placeholder="כתבו כאן כל דבר נוסף שחשוב בעיניכם..."></textarea>
+
+      <button type="submit">שלח</button>
+    </form>
+  </div>
+
+  <script>
+    const rodanutPoints = [
+      "ניצחון של המנהיג בבחירות דמוקרטיות",
+      "פירוק המנגנונים המגבילים את הרשות המבצעת",
+      "השתלטות על בית הנבחרים או הפיכתו לבלתי רלוונטי",
+      "הכפפת בתי המשפט לרשות המבצעת",
+      "הצבת נאמנים בתפקידי מפתח",
+      "שינוי המפה התקשורתית",
+      "דה-לגיטימציה של ארגוני חברה אזרחית",
+      "שינוי חוקי הבחירות לטובת המשטר"
+    ];
+
+    const fascismPoints = [
+      "פולחן המסורת",
+      "דחיית המודרניזם",
+      "פולחן הפעולה לשם פעולה",
+      "ביקורת נחשבת כבגידה",
+      "פחד מהבדל",
+      "ערעור על תסכול חברתי",
+      "אובססיה לעלילה",
+      "האויב חזק וחלש כאחד",
+      "שאיפה לשלום נתפסת כתמיכה באויב",
+      "בוז לחלשים",
+      "כולם גיבורים",
+      "גבריות ומיליטנטיות",
+      "פופוליזם סלקטיבי",
+      "השטחה של הדיון הציבורי"
+    ];
+
+    const sourceSelect = document.getElementById('sourceType');
+    const checkboxSection = document.getElementById('checkboxSection');
+
+    sourceSelect.addEventListener('change', function () {
+      const value = this.value;
+      checkboxSection.innerHTML = '';
+      checkboxSection.style.display = 'block';
+      const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
+      points.forEach((point, index) => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'points';
+        checkbox.value = point;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(point));
+        checkboxSection.appendChild(label);
+      });
+    });
+
+    document.getElementById('reportForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data = {
+        source: sourceSelect.value,
+        points: Array.from(document.querySelectorAll('input[name="points"]:checked')).map(cb => cb.value),
+        link: document.getElementById('link').value,
+        date: document.getElementById('date').value,
+        comments: document.getElementById('comments').value
+      };
+      console.log("נשלח:", data);
+      alert("הטופס נשלח (כרגע רק לקונסול – בהמשך ישולב עם Google Sheet)");
+      this.reset();
+      checkboxSection.innerHTML = '';
+      checkboxSection.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
