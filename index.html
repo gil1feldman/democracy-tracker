@@ -51,29 +51,34 @@
 
     .checkboxes {
       margin-top: 10px;
-      padding: 10px;
+      padding: 10px 15px; /* הוספת padding ימני ושמאלי לעקביות */
       border: 1px solid #eee;
       border-radius: 8px;
       background: #fafafa;
       max-height: 300px;
       overflow-y: auto;
-      text-align: right; /* יישור התוכן לימין */
+      text-align: right; /* יישור כללי לימין */
     }
 
     .checkboxes label {
       display: flex;
-      flex-direction: row-reverse; /* שומר על סדר ימני */
+      flex-direction: row; /* שינוי ל-row רגיל עם התאמות ל-RTL */
       align-items: center;
-      justify-content: flex-end; /* יישור התוכן לימין */
-      gap: 10px;
+      justify-content: flex-start; /* התחלה מימין ב-RTL */
+      gap: 8px; /* מרווח קטן יותר לעקביות */
       text-align: right; /* יישור הטקסט לימין */
       font-weight: normal;
-      margin: 5px 0;
+      margin: 8px 0; /* מרווח אנכי עקבי */
+      padding-right: 10px; /* ריווח פנימי מימין */
     }
 
     .checkboxes input[type="checkbox"] {
-      margin: 0;
-      margin-left: 5px;
+      margin: 0; /* הסרת מרווחים מיותרים */
+      order: 1; /* מבטיח שה-checkbox יופיע מימין לטקסט ב-RTL */
+    }
+
+    .checkboxes label span {
+      order: 2; /* הטקסט מופיע משמאל ל-checkbox ב-RTL */
     }
 
     button {
@@ -166,8 +171,10 @@
         checkbox.type = 'checkbox';
         checkbox.name = 'points';
         checkbox.value = point;
+        const textSpan = document.createElement('span'); // הוספת span לטקסט
+        textSpan.textContent = point;
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(point));
+        label.appendChild(textSpan);
         checkboxSection.appendChild(label);
       });
     });
