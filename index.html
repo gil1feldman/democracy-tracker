@@ -143,9 +143,26 @@
     const sourceSelect = document.getElementById('sourceType');
     const checkboxSection = document.getElementById('checkboxSection');
 
-    
-});
-    });
+    sourceSelect.addEventListener('change', function () {
+      const value = this.value;
+      checkboxSection.innerHTML = '';
+      if (!value) {
+        checkboxSection.style.display = 'none';
+        return;
+      }
+      checkboxSection.style.display = 'block';
+      const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
+      points.forEach((point, index) => {
+        const label = document.createElement('label');
+        label.style.justifyContent = 'flex-end';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'points';
+        checkbox.value = point;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(' ' + point));
+        checkboxSection.appendChild(label);
+      });
     });
 
     document.getElementById('reportForm').addEventListener('submit', function (e) {
