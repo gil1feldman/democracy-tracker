@@ -62,9 +62,9 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row-reverse; /* מבטיח שה-checkbox יהיה מימין לטקסט */
+      flex-direction: row-reverse;
       align-items: center;
-      justify-content: flex-start; /* מתחיל מימין ב-RTL */
+      justify-content: flex-start;
       gap: 12px;
       text-align: right;
       font-weight: normal;
@@ -84,6 +84,12 @@
       width: 18px;
       height: 18px;
       accent-color: #003366;
+    }
+
+    .checkboxes label span {
+      flex: 1;
+      direction: rtl;
+      text-align: right;
     }
 
     button {
@@ -176,8 +182,12 @@
         checkbox.type = 'checkbox';
         checkbox.name = 'points';
         checkbox.value = point;
+
+        const textSpan = document.createElement('span');
+        textSpan.textContent = point;
+
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(point));
+        label.appendChild(textSpan);
         checkboxSection.appendChild(label);
       });
     });
