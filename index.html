@@ -51,34 +51,29 @@
 
     .checkboxes {
       margin-top: 10px;
-      padding: 10px 15px; /* הוספת padding ימני ושמאלי לעקביות */
+      padding: 10px 15px;
       border: 1px solid #eee;
       border-radius: 8px;
       background: #fafafa;
       max-height: 300px;
       overflow-y: auto;
-      text-align: right; /* יישור כללי לימין */
+      text-align: right;
     }
 
     .checkboxes label {
       display: flex;
-      flex-direction: row; /* שינוי ל-row רגיל עם התאמות ל-RTL */
+      flex-direction: row-reverse; /* מבטיח שה-checkbox יהיה מימין לטקסט */
       align-items: center;
-      justify-content: flex-start; /* התחלה מימין ב-RTL */
-      gap: 8px; /* מרווח קטן יותר לעקביות */
-      text-align: right; /* יישור הטקסט לימין */
+      justify-content: flex-start; /* מתחיל מימין ב-RTL */
+      gap: 10px;
+      text-align: right;
       font-weight: normal;
-      margin: 8px 0; /* מרווח אנכי עקבי */
-      padding-right: 10px; /* ריווח פנימי מימין */
+      margin: 8px 0;
+      width: 100%; /* מבטיח שה-label יתפוס את כל הרוחב */
     }
 
     .checkboxes input[type="checkbox"] {
-      margin: 0; /* הסרת מרווחים מיותרים */
-      order: 1; /* מבטיח שה-checkbox יופיע מימין לטקסט ב-RTL */
-    }
-
-    .checkboxes label span {
-      order: 2; /* הטקסט מופיע משמאל ל-checkbox ב-RTL */
+      margin: 0;
     }
 
     button {
@@ -171,10 +166,8 @@
         checkbox.type = 'checkbox';
         checkbox.name = 'points';
         checkbox.value = point;
-        const textSpan = document.createElement('span'); // הוספת span לטקסט
-        textSpan.textContent = point;
         label.appendChild(checkbox);
-        label.appendChild(textSpan);
+        label.appendChild(document.createTextNode(point));
         checkboxSection.appendChild(label);
       });
     });
