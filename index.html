@@ -62,7 +62,7 @@
 
     .checkboxes label {
       display: flex;
-      flex-direction: row; /* ✅ checkbox מימין לטקסט */
+      flex-direction: row; /* checkbox מימין, טקסט משמאל */
       align-items: center;
       justify-content: flex-start;
       gap: 12px;
@@ -186,8 +186,8 @@
         const textSpan = document.createElement('span');
         textSpan.textContent = point;
 
-        label.appendChild(textSpan);   // קודם הטקסט
-        label.appendChild(checkbox);  // אחר כך ה-checkbox
+        label.appendChild(checkbox);  // ✅ checkbox קודם
+        label.appendChild(textSpan);  // ✅ ואז הטקסט
         checkboxSection.appendChild(label);
       });
     });
