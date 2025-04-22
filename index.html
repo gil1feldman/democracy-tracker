@@ -136,6 +136,9 @@
   </div>
 
   <script>
+    const sourceSelect = document.getElementById('sourceType');
+    const checkboxSection = document.getElementById('checkboxSection');
+
     const rodanutPoints = [
       "ניצחון של המנהיג בבחירות דמוקרטיות",
       "פירוק המנגנונים המגבילים את הרשות המבצעת",
@@ -163,9 +166,6 @@
       "פופוליזם סלקטיבי",
       "השטחה של הדיון הציבורי"
     ];
-
-    const sourceSelect = document.getElementById('sourceType');
-    const checkboxSection = document.getElementById('checkboxSection');
 
     sourceSelect.addEventListener('change', function () {
       const value = this.value;
@@ -210,15 +210,22 @@
           "Content-Type": "application/json"
         }
       })
-      .then(res => res.json())
-      .then(response => {
-        alert("הטופס נשלח בהצלחה!");
-        document.getElementById('reportForm').reset();
-        checkboxSection.innerHTML = '';
-        checkboxSection.style.display = 'none';
+      .then(async res => {
+        const text = await res.text();
+        console.log("Response status:", res.status);
+        console.log("Response text:", text);
+
+        if (res.ok) {
+          alert("הטופס נשלח בהצלחה!");
+          document.getElementById('reportForm').reset();
+          checkboxSection.innerHTML = '';
+          checkboxSection.style.display = 'none';
+        } else {
+          alert("שגיאה בשליחה. קוד שגיאה: " + res.status);
+        }
       })
       .catch(err => {
-        console.error(err);
+        console.error("Fetch error:", err);
         alert("שגיאה בשליחה. נסה שוב.");
       });
     });
