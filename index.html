@@ -135,91 +135,91 @@
     </form>
   </div>
 
-<script>
-  const sourceSelect = document.getElementById('sourceType');
-  const checkboxSection = document.getElementById('checkboxSection');
+  <script>
+    const sourceSelect = document.getElementById('sourceType');
+    const checkboxSection = document.getElementById('checkboxSection');
 
-  const rodanutPoints = [
-    "ניצחון של המנהיג בבחירות דמוקרטיות",
-    "פירוק המנגנונים המגבילים את הרשות המבצעת",
-    "השתלטות על בית הנבחרים או הפיכתו לבלתי רלוונטי",
-    "הכפפת בתי המשפט לרשות המבצעת",
-    "הצבת נאמנים בתפקידי מפתח",
-    "שינוי המפה התקשורתית",
-    "דה-לגיטימציה של ארגוני חברה אזרחית",
-    "שינוי חוקי הבחירות לטובת המשטר"
-  ];
+    const rodanutPoints = [
+      "ניצחון של המנהיג בבחירות דמוקרטיות",
+      "פירוק המנגנונים המגבילים את הרשות המבצעת",
+      "השתלטות על בית הנבחרים או הפיכתו לבלתי רלוונטי",
+      "הכפפת בתי המשפט לרשות המבצעת",
+      "הצבת נאמנים בתפקידי מפתח",
+      "שינוי המפה התקשורתית",
+      "דה-לגיטימציה של ארגוני חברה אזרחית",
+      "שינוי חוקי הבחירות לטובת המשטר"
+    ];
 
-  const fascismPoints = [
-    "פולחן המסורת",
-    "דחיית המודרניזם",
-    "פולחן הפעולה לשם פעולה",
-    "ביקורת נחשבת כבגידה",
-    "פחד מהבדל",
-    "ערעור על תסכול חברתי",
-    "אובססיה לעלילה",
-    "האויב חזק וחלש כאחד",
-    "שאיפה לשלום נתפסת כתמיכה באויב",
-    "בוז לחלשים",
-    "כולם גיבורים",
-    "גבריות ומיליטנטיות",
-    "פופוליזם סלקטיבי",
-    "השטחה של הדיון הציבורי"
-  ];
+    const fascismPoints = [
+      "פולחן המסורת",
+      "דחיית המודרניזם",
+      "פולחן הפעולה לשם פעולה",
+      "ביקורת נחשבת כבגידה",
+      "פחד מהבדל",
+      "ערעור על תסכול חברתי",
+      "אובססיה לעלילה",
+      "האויב חזק וחלש כאחד",
+      "שאיפה לשלום נתפסת כתמיכה באויב",
+      "בוז לחלשים",
+      "כולם גיבורים",
+      "גבריות ומיליטנטיות",
+      "פופוליזם סלקטיבי",
+      "השטחה של הדיון הציבורי"
+    ];
 
-  sourceSelect.addEventListener('change', function () {
-    const value = this.value;
-    checkboxSection.innerHTML = '';
-    if (!value) {
-      checkboxSection.style.display = 'none';
-      return;
-    }
-    checkboxSection.style.display = 'block';
-    const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
-    points.forEach((point) => {
-      const label = document.createElement('label');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.name = 'points';
-      checkbox.value = point;
-
-      const textSpan = document.createElement('span');
-      textSpan.textContent = point;
-
-      label.appendChild(checkbox);
-      label.appendChild(textSpan);
-      checkboxSection.appendChild(label);
-    });
-  });
-
-  document.getElementById('reportForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('source', sourceSelect.value);
-    formData.append('link', document.getElementById('link').value);
-    formData.append('date', document.getElementById('date').value);
-    formData.append('comments', document.getElementById('comments').value);
-
-    const selectedPoints = Array.from(document.querySelectorAll('input[name="points"]:checked')).map(cb => cb.value);
-    formData.append('points', selectedPoints.join(', ')); // נשלח כמחרוזת אחת מופרדת בפסיקים
-
-    fetch("https://script.google.com/macros/s/AKfycbxcngZrXeU4b2EaQA-LNa2hl82p3AorhXGR-Jp6VSIugJdX12ywHsH7o_3bKYenMY0/exec", {
-      method: "POST",
-      body: formData
-    })
-    .then(response => response.text())
-    .then(result => {
-      alert("הטופס נשלח בהצלחה!");
-      document.getElementById('reportForm').reset();
+    sourceSelect.addEventListener('change', function () {
+      const value = this.value;
       checkboxSection.innerHTML = '';
-      checkboxSection.style.display = 'none';
-    })
-    .catch(error => {
-      alert("שגיאה בשליחה. נסה שוב.");
-      console.error("שגיאת שליחה:", error);
+      if (!value) {
+        checkboxSection.style.display = 'none';
+        return;
+      }
+      checkboxSection.style.display = 'block';
+      const points = value === 'rodanut' ? rodanutPoints : fascismPoints;
+      points.forEach((point) => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'points';
+        checkbox.value = point;
+
+        const textSpan = document.createElement('span');
+        textSpan.textContent = point;
+
+        label.appendChild(checkbox);
+        label.appendChild(textSpan);
+        checkboxSection.appendChild(label);
+      });
     });
-  });
-</script>
+
+    document.getElementById('reportForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('source', sourceSelect.value);
+      formData.append('link', document.getElementById('link').value);
+      formData.append('date', document.getElementById('date').value);
+      formData.append('comments', document.getElementById('comments').value);
+
+      const selectedPoints = Array.from(document.querySelectorAll('input[name="points"]:checked')).map(cb => cb.value);
+      formData.append('points', selectedPoints.join(', '));
+
+      fetch("https://script.google.com/macros/s/AKfycbxcngZrXeU4b2EaQA-LNa2hl82p3AorhXGR-Jp6VSIugJdX12ywHsH7o_3bKYenMY0/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("הטופס נשלח בהצלחה!");
+        document.getElementById('reportForm').reset();
+        checkboxSection.innerHTML = '';
+        checkboxSection.style.display = 'none';
+      })
+      .catch(error => {
+        alert("שגיאה בשליחה. נסה שוב.");
+        console.error("שגיאת שליחה:", error);
+      });
+    });
+  </script>
 </body>
 </html>
