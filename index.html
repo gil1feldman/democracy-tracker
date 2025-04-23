@@ -13,21 +13,6 @@
       max-width: 100%;
     }
 
-    .highlight {
-      color: red;
-      font-weight: bold;
-    }
-
-    .preview {
-      margin-top: 30px;
-      border-top: 2px solid #ccc;
-      padding-top: 20px;
-      width: 100%;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .banner {
       width: 100%;
       height: auto;
@@ -36,17 +21,6 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    .centered {
-      text-align: center;
-    }
-
-    img.preview-img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 20px auto;
     }
 
     form {
@@ -74,9 +48,11 @@
     }
 
     button {
-      margin: 5px 0;
+      margin: 20px 0;
       width: 100%;
       max-width: 300px;
+      padding: 10px;
+      font-size: 16px;
     }
 
     @media (max-width: 600px) {
@@ -114,25 +90,16 @@
       <textarea id="notesInput" rows="3" placeholder="הוסף פרשנות, מקור מידע נוסף, או כל הבהרה שתרצה..."></textarea>
     </label>
 
-    <label>הדבק תמונה:
-      <input type="file" id="imageInput" accept="image/*">
-    </label>
-
     <br><br>
-    <button type="button" onclick="generatePreview()">צור</button>
-    <button type="button" onclick="downloadImage()">הורד כתמונה</button>
     <button type="button" onclick="submitToSheet()">שלח לידיעה</button>
   </form>
-
-  <div class="preview" id="previewSection"></div>
-  <div id="canvasContainer"><canvas id="outputCanvas"></canvas></div>
 
   <script>
     const points = [
       "ניצחון של המנהיג בבחירות דמוקרטיות",
       "פירוק המנגנונים המגבילים את הרשות המבצעת",
       "השתלטות על בית הנבחרים או הפיכת מוסד זה לבלתי רלוונטי",
-      "הכפפת בתי המשפט לרשות המבצעת - על ידי 'רפורמות' ומינוי נאמנים",
+      "הכפפת בתי המשפט לרשות המבצעת - על ידי 'רפורמות' ומינוי נאמס",
       "הצבת נאמנים בתפקידי מפתח - (התובע הכללי, ועדת הבחירות המרכזית, הוועדה לבחירת שופטים וכדומה)",
       "שינוי המפה התקשורתית, כך שכלי תקשורת ישמשו תיבת תהודה למסרי הממשלה",
       "דה-לגיטימציה והגבלת פעילות של ארגוני חברה אזרחית ומפלגות האופוזיציה",
@@ -152,46 +119,6 @@
       label.appendChild(textSpan);
       checkboxContainer.appendChild(label);
     });
-
-    let uploadedImage = null;
-
-    document.getElementById("imageInput").addEventListener("change", function(e) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        uploadedImage = new Image();
-        uploadedImage.src = e.target.result;
-      };
-      reader.readAsDataURL(this.files[0]);
-    });
-
-    function generatePreview() {
-      const preview = document.getElementById("previewSection");
-      preview.innerHTML = "";
-
-      const bannerImg = document.createElement("img");
-      bannerImg.src = "https://raw.githubusercontent.com/gil1feldman/RODANUT/main/%D7%A8%D7%95%D7%93%D7%A0%D7%95%D7%AA_%D7%91%D7%90%D7%A0%D7%A8_%D7%A6%D7%A8.png";
-      bannerImg.className = "banner";
-      preview.appendChild(bannerImg);
-
-      const selected = Array.from(document.querySelectorAll("input[type='checkbox']")).map(cb => cb.checked);
-      const list = document.createElement("ul");
-      points.forEach((point, i) => {
-        const item = document.createElement("li");
-        item.innerHTML = selected[i] ? `<span class='highlight'>${point}</span>` : point;
-        list.appendChild(item);
-      });
-      preview.appendChild(list);
-
-      if (uploadedImage) {
-        const imgWrapper = document.createElement("div");
-        imgWrapper.className = "centered";
-        const img = document.createElement("img");
-        img.src = uploadedImage.src;
-        img.className = "preview-img";
-        imgWrapper.appendChild(img);
-        preview.appendChild(imgWrapper);
-      }
-    }
 
     function submitToSheet() {
       const name = document.getElementById("submitterInput").value.trim();
@@ -219,7 +146,10 @@
           "Content-Type": "application/json"
         }
       })
-      .then(res => res.text())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.text();
+      })
       .then(response => {
         alert("הידיעה נשלחה בהצלחה!");
         document.getElementById("submitterInput").value = "";
@@ -229,7 +159,7 @@
       })
       .catch(err => {
         console.error(err);
-        alert("שגיאה בשליחה. ודא שהקישור לסקריפט פעיל.");
+        alert("שגיאה בשליחה: " + err.message);
       });
     }
   </script>
