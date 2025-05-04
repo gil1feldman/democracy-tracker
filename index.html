@@ -1,170 +1,241 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>רודנות בחסות החוק - תיעוד</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>יומן פעילות – מדינת ישראל</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       direction: rtl;
-      padding: 20px;
-      box-sizing: border-box;
-      max-width: 100%;
-    }
-
-    .banner {
-      width: 100%;
-      height: auto;
-      max-width: 800px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    form {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    label {
+      background: linear-gradient(to right, #eef2f3, #8dc6ff);
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 12px;
-      font-size: 16px;
-      flex-wrap: wrap;
-      line-height: 1.4;
+      justify-content: center;
+      padding: 0 20px 20px;
     }
-
-    label input[type="checkbox"] {
-      margin-top: 4px;
-    }
-
-    textarea {
+    .container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
       width: 100%;
+      max-width: 600px;
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      color: #0A3D91;
+      margin-bottom: 30px;
+      font-size: 26px;
+      text-align: center;
+    }
+    label {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 12px 0 8px;
+      display: block;
+      color: #333;
+      text-align: right;
+    }
+    input, textarea {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #f9f9f9;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    input:focus, textarea:focus {
+      border-color: #0A3D91;
+      background-color: #eef6ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(10, 61, 145, 0.3);
+    }
+
+    .custom-multiselect {
+      position: relative;
+    }
+
+    #selectedCategories {
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .checkboxes {
+      display: none;
+      position: absolute;
+      top: 105%;
+      right: 0;
+      width: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 999;
+      padding: 6px 8px;
+      text-align: right;
+    }
+
+    .checkboxes label {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 10px;
+      direction: rtl;
+      font-size: 15px;
+      padding: 6px 4px;
+      cursor: pointer;
+      text-align: right;
+      margin: 2px 0;
+    }
+
+    .checkboxes input[type="checkbox"] {
+      margin: 0;
+      transform: scale(1.2);
+      justify-self: start;
+    }
+
+    .checkboxes label:hover {
+      background-color: #eef6ff;
+      border-radius: 6px;
     }
 
     button {
-      margin: 20px 0;
+      background: linear-gradient(to right, #0A3D91, #2E8BFF);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
       width: 100%;
-      max-width: 300px;
-      padding: 10px;
-      font-size: 16px;
+      transition: background 0.3s ease;
     }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
+    button:hover {
+      background: #0A3D91;
+    }
+    #responseMessage {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
       }
-
-      h3 {
-        font-size: 18px;
-      }
-
-      button {
-        font-size: 16px;
+      h1 {
+        font-size: 22px;
       }
     }
   </style>
 </head>
 <body>
-  <img class="banner" src="https://raw.githubusercontent.com/gil1feldman/RODANUT/main/%D7%A8%D7%95%D7%93%D7%A0%D7%95%D7%AA_%D7%91%D7%90%D7%A0%D7%A8_%D7%A6%D7%A8.png" alt="באנר">
-
-  <form id="messageForm">
-    <h3>סמנו את הנקודות הרלוונטיות למהלך הנוכחי:</h3>
-    <div id="checkboxes"></div>
-    <br>
-
-    <label>שם מוסיף המידע:
-      <input type="text" id="submitterInput" placeholder="שם פרטי ומשפחה" required>
-    </label>
-
-    <label>קישור לידיעה:
-      <input type="url" id="newsLink" placeholder="https://example.com" required>
-    </label>
-
-    <label>פרשנות / הערות:
-      <textarea id="notesInput" rows="3" placeholder="הוסף פרשנות, מקור מידע נוסף, או כל הבהרה שתרצה..."></textarea>
-    </label>
-
-    <br><br>
-    <button type="button" onclick="submitToSheet()">שלח לידיעה</button>
-  </form>
-
+  <div class="container">
+    <h1>יומן פעילות – מדינת ישראל</h1>
+    <form id="activityForm">
+      <label>תיאור קצר של האירוע:
+        <input type="text" id="description" required placeholder="כמה מילים על מה קרה...">
+      </label>
+      <label>קטגוריה (ניתן לבחור כמה):</label>
+      <div class="custom-multiselect">
+        <div id="selectedCategories" onclick="toggleDropdown()">בחר קטגוריות...</div>
+        <div id="checkboxes" class="checkboxes">
+          <label><input type="checkbox" value="ביטחוני"> ביטחוני</label>
+          <label><input type="checkbox" value="פוליטי"> פוליטי</label>
+          <label><input type="checkbox" value="מדיני"> מדיני</label>
+          <label><input type="checkbox" value="חברתי"> חברתי</label>
+          <label><input type="checkbox" value="סוגיית החטופים"> סוגיית החטופים</label>
+          <label><input type="checkbox" value="פלילי"> פלילי</label>
+          <label><input type="checkbox" value="אחר"> אחר</label>
+        </div>
+      </div>
+      <label>ציין קטגוריה אחרת:
+        <input type="text" id="otherCategory" placeholder="כתוב כאן את הקטגוריה...">
+      </label>
+      <label>קישור לידעה (לא חובה):
+        <input type="url" id="link" placeholder="הדבק כאן קישור (אם יש)">
+      </label>
+      <label>שם מזין הידעה:
+        <input type="text" id="submitter" placeholder="שם או כינוי">
+      </label>
+      <label>זמן האירוע (אם שונה מהיום):
+        <input type="datetime-local" id="eventTime">
+      </label>
+      <label>הערות:
+        <textarea id="comments" placeholder="פרטים נוספים, פרשנות, מקורות וכו'..."></textarea>
+      </label>
+      <button type="button" onclick="submitForm()">שלח</button>
+      <p id="responseMessage"></p>
+    </form>
+  </div>
   <script>
-    const points = [
-      "ניצחון של המנהיג בבחירות דמוקרטיות",
-      "פירוק המנגנונים המגבילים את הרשות המבצעת",
-      "השתלטות על בית הנבחרים או הפיכת מוסד זה לבלתי רלוונטי",
-      "הכפפת בתי המשפט לרשות המבצעת - על ידי 'רפורמות' ומינוי נאמנים",
-      "הצבת נאמנים בתפקידי מפתח - (התובע הכללי, ועדת הבחירות המרכזית, הוועדה לבחירת שופטים וכדומה)",
-      "שינוי המפה התקשורתית, כך שכלי תקשורת ישמשו תיבת תהודה למסרי הממשלה",
-      "דה-לגיטימציה והגבלת פעילות של ארגוני חברה אזרחית ומפלגות האופוזיציה",
-      "שינוי חוקי הבחירות באופן שמבטיח ניצחון בבחירות עתידיות"
-    ];
-
-    const checkboxContainer = document.getElementById("checkboxes");
-    points.forEach((point, index) => {
-      const label = document.createElement("label");
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = "point" + index;
-      checkbox.value = index;
-      const textSpan = document.createElement("span");
-      textSpan.textContent = (index + 1) + ". " + point;
-      label.appendChild(checkbox);
-      label.appendChild(textSpan);
-      checkboxContainer.appendChild(label);
-    });
-
-    function submitToSheet() {
-      const name = document.getElementById("submitterInput").value.trim();
-      const link = document.getElementById("newsLink").value.trim();
-      const notes = document.getElementById("notesInput").value.trim();
-
-      const selectedPoints = Array.from(document.querySelectorAll("input[type='checkbox']"))
-        .map((cb, i) => cb.checked ? (i + 1) + ". " + points[i] : null)
-        .filter(Boolean);
-
-      if (!name || !link) {
-        alert("נא להזין שם וקישור לידיעה");
-        return;
+    let expanded = false;
+    function toggleDropdown() {
+      const checkboxes = document.getElementById("checkboxes");
+      checkboxes.style.display = expanded ? "none" : "block";
+      expanded = !expanded;
+    }
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-multiselect')) {
+        document.getElementById("checkboxes").style.display = "none";
+        expanded = false;
       }
+    });
+    function submitForm() {
+      const description = document.getElementById("description").value.trim();
+      const checkboxes = document.querySelectorAll(".checkboxes input[type='checkbox']");
+      const selectedCategories = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+      const otherCategory = document.getElementById("otherCategory").value.trim();
+      const link = document.getElementById("link").value.trim();
+      const submitter = document.getElementById("submitter").value.trim();
+      const eventTime = document.getElementById("eventTime").value;
+      const comments = document.getElementById("comments").value.trim();
 
-      fetch("https://script.google.com/macros/s/AKfycbxSWO5Elyl_AyrcSt-n8T4re-LMRksXhXdJVuE6d99dKK6wY7Kmsf_x536Yt6U-qtKd/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbwRjPkpZvTVCEY14hGJTYC_yhykOkEFg8Od17_D7laDJHpSSS3adlPdaFw46S6-ktE/exec", {
         method: "POST",
-        body: JSON.stringify({
-          submitter: name,
-          link: link,
-          points: selectedPoints,
-          notes: notes
-        }),
         headers: {
           "Content-Type": "application/json"
         },
-        redirect: "follow"
+        body: JSON.stringify({
+          description,
+          category: selectedCategories,
+          other_category: otherCategory,
+          link,
+          submitter,
+          eventTime,
+          comments
+        })
       })
       .then(res => {
-        if (!res.ok) {
-          return res.text().then(text => {
-            throw new Error(`HTTP error! Status: ${res.status}, Message: ${text}`);
-          });
-        }
+        if (!res.ok) throw new Error("Network response was not ok");
         return res.text();
       })
       .then(response => {
-        alert("הידיעה נשלחה בהצלחה!");
-        document.getElementById("submitterInput").value = "";
-        document.getElementById("newsLink").value = "";
-        document.getElementById("notesInput").value = "";
-        document.querySelectorAll("input[type='checkbox']").forEach(cb => cb.checked = false);
+        document.getElementById("responseMessage").innerText = "הטופס נשלח בהצלחה!";
+        document.getElementById("activityForm").reset();
+        document.getElementById("selectedCategories").innerText = "בחר קטגוריות...";
+        document.getElementById("checkboxes").style.display = "none";
+        expanded = false;
       })
-      .catch(err => {
-        console.error("Fetch error:", err);
-        alert("שגיאה בשליחה: " + err.message);
+      .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("responseMessage").innerText = "שגיאה בשליחה. נסה שוב.";
       });
     }
   </script>
